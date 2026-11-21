@@ -63,7 +63,7 @@
             "type": "float",
             "name": "Scale",
             "description": "Scale the menu.",
-            "default": 0.875,
+            "default": 0.75,
             "min": 0.5,
             "max": 2.5,
             "control": {

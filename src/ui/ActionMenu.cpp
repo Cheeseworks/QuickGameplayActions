@@ -1,26 +1,29 @@
-#include "ActionMenu.h"
+#include "ActionMenu.hpp"
+
+#include <cw.h>
 
 #include <rhatt/prelude.h>
 
 #include <Geode/Geode.hpp>
 
 using namespace geode::prelude;
+using namespace cw::gps;
 
 Result<CCPoint> matjson::Serialize<CCPoint>::fromJson(matjson::Value const& value) {
     CCPoint out;
 
-    GEODE_UNWRAP_INTO(out.x, value["x"].asDouble());
-    GEODE_UNWRAP_INTO(out.y, value["y"].asDouble());
+    GEODE_UNWRAP_INTO(out.x, value["x"].asFloat());
+    GEODE_UNWRAP_INTO(out.y, value["y"].asFloat());
 
     return Ok(out);
 }
 
 matjson::Value matjson::Serialize<CCPoint>::toJson(CCPoint const& value) {
-    auto obj = matjson::Value();
-    obj["x"] = value.x;
-    obj["y"] = value.y;
+    auto out = matjson::Value();
+    out["x"] = value.x;
+    out["y"] = value.y;
 
-    return obj;
+    return out;
 }
 
 class ActionMenu::Impl final {
@@ -39,7 +42,7 @@ public:
     bool toggleOnPress = Mod::get()->getSettingValue<bool>("toggle-press");
 
     float scale = Mod::get()->getSettingValue<float>("scale");
-    int64_t opacity = Mod::get()->getSettingValue<int64_t>("opacity");
+    GLubyte opacity = Mod::get()->getSettingValue<GLubyte>("opacity");
 
     CCSize const screenSize = CCDirector::sharedDirector()->getWinSize();
     CCPoint dragStartPos = { 0.0f, 0.0f };
@@ -84,6 +87,7 @@ bool ActionMenu::init(PlayLayer* pl) {
 
     auto layout = RowLayout::create()
                       ->setGap(2.5f)
+                      ->setAutoScale(false)
                       ->setAutoGrowAxis(0.0f);
 
     m_impl->menu = CCNode::create();
@@ -110,12 +114,7 @@ bool ActionMenu::init(PlayLayer* pl) {
             [this, pl](Button* sender) {
                 {
                     if (pl) pl->togglePracticeMode(!pl->m_isPracticeMode);
-
-                    auto btnSprite = CCSprite::createWithSpriteFrameName(pl->m_isPracticeMode ? "GJ_normalBtn_001.png" : "GJ_practiceBtn_001.png");
-                    btnSprite->setOpacity(m_impl->opacity);
-                    btnSprite->setScale(m_impl->scale);
-
-                    sender->setDisplayNode(btnSprite);
+                    sender->setDisplayNode(CCSprite::createWithSpriteFrameName(pl->m_isPracticeMode ? "GJ_normalBtn_001.png" : "GJ_practiceBtn_001.png"));
                 };
             },
         },
@@ -133,8 +132,8 @@ bool ActionMenu::init(PlayLayer* pl) {
             "GJ_menuBtn_001.png",
             "exit-btn",
             [pl](auto) {
-                cw::sfx::play("quitSound_01.ogg");
                 if (pl) pl->onQuit();
+                cw::sfx::play("quitSound_01.ogg");
             },
         },
         ActionItem{
@@ -207,18 +206,14 @@ void ActionMenu::setVisible(bool visible) {
         (void)Mod::get()->setSavedValue("visible", visible);
 
 #ifdef CW_TESTING
-        log::debug("Toggled action menu {}", m_impl->show ? "on" : "off");
+        log::trace("Toggled action menu {}", m_impl->show ? "on" : "off");
 #endif
     } else {
         log::error("Couldn't toggle action menu visibility");
     };
 }
 
-void ActionMenu::onScaleEnd() {
-    m_impl->isAnimating = false;
-}
-
-bool ActionMenu::ccTouchBegan(CCTouch* touch, CCEvent* ev) {
+bool ActionMenu::ccTouchBegan(CCTouch* touch, CCEvent*) {
     if (m_impl->sprite) {
         auto const box = m_impl->sprite->boundingBox();
 
@@ -248,14 +243,14 @@ bool ActionMenu::ccTouchBegan(CCTouch* touch, CCEvent* ev) {
                 )
             );
 
-            return true;  // swallow touch like a...
+            return true;  // swallow like a
         };
     };
 
     return false;
 }
 
-void ActionMenu::ccTouchMoved(CCTouch* touch, CCEvent* ev) {
+void ActionMenu::ccTouchMoved(CCTouch* touch, CCEvent*) {
     if (m_impl->isDragging) {
         auto const touchLocation = touch->getLocation();
         auto const newLocation = ccpAdd(touchLocation, m_impl->dragStartPos);
@@ -267,7 +262,7 @@ void ActionMenu::ccTouchMoved(CCTouch* touch, CCEvent* ev) {
     };
 }
 
-void ActionMenu::ccTouchEnded(CCTouch* touch, CCEvent* ev) {
+void ActionMenu::ccTouchEnded(CCTouch* touch, CCEvent*) {
     if (m_impl->isDragging) {
         auto pos = ccpSub(getPosition(), touch->getLocation());
         if (m_impl->toggleOnPress && m_impl->isDistant(m_impl->comparePos, getPosition(), 5.0f)) setVisible(!m_impl->show);
@@ -280,7 +275,22 @@ void ActionMenu::ccTouchEnded(CCTouch* touch, CCEvent* ev) {
             m_impl->isAnimating = true;
 
             m_impl->sprite->stopAllActions();
-            m_impl->sprite->runAction(CCSequence::create(CCSpawn::createWithTwoActions(CCFadeTo::create(0.125f, 255), CCEaseElasticOut::create(CCScaleTo::create(0.875f, m_impl->scale))), CCCallFunc::create(this, callfunc_selector(ActionMenu::onScaleEnd)), CCDelayTime::create(1.0f), CCFadeTo::create(0.5f, m_impl->opacity / 1.25), nullptr));
+            m_impl->sprite->runAction(
+                CCSequence::create(
+                    CCSpawn::createWithTwoActions(
+                        CCFadeTo::create(0.125f, 255),
+                        CCEaseElasticOut::create(
+                            CCScaleTo::create(0.875f, m_impl->scale)
+                        )
+                    ),
+                    CallFuncExt::create([this]() {
+                        m_impl->isAnimating = false;
+                    }),
+                    CCDelayTime::create(1.0f),
+                    CCFadeTo::create(0.5f, m_impl->opacity / 1.25),
+                    nullptr
+                )
+            );
         };
 
         m_impl->dragStartPos = pos;
