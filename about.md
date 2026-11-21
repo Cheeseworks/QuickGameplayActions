@@ -1,9 +1,7 @@
 # ![🕹️](frame:GJ_menuBtn_001.png?scale=0.325) Gameplay Shortcuts
 **Mobile-friendly UI for quick in-game actions.**
 
-*by [Cheeseworks](user:6408873)!*
-
-> ![✳](frame:collaborationIcon_001.png) <cg>*This mod has settings you can utilize to customize your experience.*</c>
+<cd>by [Cheeseworks](user:6408873)!</c>
 
 ---
 

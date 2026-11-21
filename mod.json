@@ -1,20 +1,20 @@
 {
-    "geode": "5.0.0",
+    "geode": "6.0.0-beta.1",
     "gd": {
-        "win": "2.2081",
+        "win": "2.2091",
         "android": "2.2081",
         "mac": "2.2081",
         "ios": "2.2081"
     },
     "id": "cheeseworks.quickgameplayactions",
     "name": "Gameplay Shortcuts",
-    "version": "1.0.10",
+    "version": "1.0.10-beta.1",
     "developers": [
         "Cheeseworks"
     ],
     "description": "Mobile-friendly UI for quick in-game actions.",
     "links": {
-        "source": "https://github.com/BlueWitherer/QuickGameplayActions",
+        "source": "https://github.com/Cheeseworks/QuickGameplayActions",
         "homepage": "https://www.cheeseworks.gay/",
         "community": "https://www.dsc.gg/cheeseworks"
     },

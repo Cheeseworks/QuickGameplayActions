@@ -2,27 +2,23 @@
 
 #include <Geode/Geode.hpp>
 
-using namespace geode::prelude;
-
 template <>
-struct matjson::Serialize<CCPoint> final {
-    static geode::Result<CCPoint> fromJson(matjson::Value const& value);
-    static matjson::Value toJson(CCPoint const& value);
+struct matjson::Serialize<cocos2d::CCPoint> final {
+    static geode::Result<cocos2d::CCPoint> fromJson(matjson::Value const& value);
+    static matjson::Value toJson(cocos2d::CCPoint const& value);
 };
 
-class ActionMenu final : public CCLayer {
+class ActionMenu final : public cocos2d::CCLayer {
 private:
     class Impl;
     std::unique_ptr<Impl> m_impl;
 
-    using Callback = Function<void(CCMenuItem*)>;
-
     struct ActionItem final {
         bool enabled;
-        const char* sprite;
-        const char* id;
-        Callback callback;
-        float scale = 1.f;
+        geode::ZStringView sprite;
+        std::string id;
+        geode::Button::ButtonCallback callback;
+        float scale = 1.0f;
     };
 
     void onScaleEnd();
@@ -41,7 +37,7 @@ protected:
 public:
     static ActionMenu* create(PlayLayer* pl);
 
-    bool ccTouchBegan(CCTouch* touch, CCEvent* event) override;
-    void ccTouchMoved(CCTouch* touch, CCEvent* event) override;
-    void ccTouchEnded(CCTouch* touch, CCEvent* event) override;
+    bool ccTouchBegan(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
+    void ccTouchMoved(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
+    void ccTouchEnded(cocos2d::CCTouch* touch, cocos2d::CCEvent* event) override;
 };

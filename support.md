@@ -1,2 +1,2 @@
-# ![<3](frame:gj_heartOn_001.png?scale=0.625) [Support me on Patreon](https://patreon.cheeseworks.gay/) to make my passion projects possible!
-###### *If you wish to simply **drop a one-time tip**, visit **[my Ko-fi page](https://kofi.cheeseworks.gay/)**! Thank you as always! <3*
+# ![<3](frame:gj_heartOn_001.png?scale=0.625) [Support me on Ko-fi](https://kofi.cheeseworks.gay/) to make my passion projects possible!
+###### *If you wish to **donate periodically**, visit **[my Patreon page](https://patreon.cheeseworks.gay/)**! Thank you as always! <3*

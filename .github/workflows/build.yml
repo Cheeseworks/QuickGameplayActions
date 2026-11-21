@@ -3,75 +3,55 @@ name: Build Geode Mod
 on:
     workflow_dispatch:
     push:
-        branches:
-            - "**"
 
 jobs:
     build:
         strategy:
             fail-fast: false
-
             matrix:
                 config:
-                    - name: Windows
-                      os: windows-latest
-                      build-type: RelWithDebInfo
+                    - target: win
+                    - target: macm1
+                    - target: macintel
+                    - target: android32
+                    - target: android64
+                    - target: ios
 
-                    - name: macOS
-                      os: macos-latest
-
-                    - name: iOS
-                      os: macos-latest
-                      target: iOS
-
-                    - name: Android32
-                      os: ubuntu-latest
-                      target: Android32
-
-                    - name: Android64
-                      os: ubuntu-latest
-                      target: Android64
-
-        name: ${{ matrix.config.name }}
-        runs-on: ${{ matrix.config.os }}
+        name: Build ${{ matrix.config.target }}
+        runs-on: ubuntu-latest
 
         steps:
-            - uses: actions/checkout@v4
+            - uses: actions/checkout@v7
 
-            - name: Compile the mod
-              uses: geode-sdk/build-geode-mod@main
+            - uses: geode-sdk/build-geode-mod-docker@main
               with:
-                  combine: true
-                  export-pdb: true
-                  export-symbols: true
                   target: ${{ matrix.config.target }}
-                  build-config: ${{ matrix.config.build-type || 'Release'}}
+                  upload: true
+                  sdk: nightly
+                  configure-args: "-DCW_TESTING=OFF"
 
-    package:
-        name: Package Builds
+    merge:
+        name: Merge
         runs-on: ubuntu-latest
         needs: ["build"]
 
         steps:
-            - uses: geode-sdk/build-geode-mod/combine@main
-              id: build
-
-            - uses: actions/upload-artifact@v4
+            - uses: geode-sdk/build-geode-mod-docker/merge@main
               with:
-                  name: Build Output
-                  path: ${{ steps.build.outputs.build-output }}
+                  upload: true
 
     nightly:
         name: Nightly Release
         runs-on: ubuntu-latest
-        needs: ["package"]
+        needs: ["merge"]
         permissions:
             contents: write
 
         steps:
-            - uses: actions/download-artifact@v4
+            - uses: actions/download-artifact@v8
               with:
-                  path: ./artifacts/
+                  path: ./artifacts/build-output/
+                  merge-multiple: true
 
             - name: Get latest release tag
               id: getrelease
@@ -90,7 +70,7 @@ jobs:
                       **Development build for commit ${{ github.sha }}**.
                       > [`View Current Changes`](${{ github.event.repository.html_url }}/compare/${{ steps.getrelease.outputs.tag }}...nightly)
                   files: |
-                      ./artifacts/Build Output/*.*
+                      ./artifacts/build-output/**/*
 
             - name: Check for Discord webhook URL
               id: check-discord
@@ -99,11 +79,11 @@ jobs:
 
             - name: Send Discord webhook
               if: ${{ steps.check-discord.outputs.has-nightly-webhook == 'true' }}
-              uses: BlueWitherer/discord-webhook@main
+              uses: Cheeseworks/discord-webhook@main
               with:
                   webhook-url: ${{ secrets.NIGHTLY_WEBHOOK }}
                   files: |
-                      ./artifacts/Build Output/*.geode
+                      ./artifacts/build-output/*.geode
                   embed-title: "[${{ github.event.repository.name }}] Nightly Release"
                   embed-description: |
                       **Development build for commit [`${{ github.sha }}`](${{ github.event.repository.html_url}}/commit/${{ github.sha }})**.

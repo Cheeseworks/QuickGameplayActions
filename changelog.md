@@ -1,5 +1,7 @@
 # v1.0.10 
-- insert log here
+- Ported to Geometry Dash version `2.2091`
+  - Bumped Geode loader support to `v6.0.0`
+- Internal improvements
 
 # v1.0.9 
 - Fixed level exit issue

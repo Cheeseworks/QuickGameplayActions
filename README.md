@@ -1,18 +1,13 @@
-# [<img src="logo.png" width="25" alt="The mod's logo." />](https://geode-sdk.org/mods/cheeseworks.quickgameplayactions) Gameplay Shortcuts
-Mobile-friendly UI for quick in-game actions.
+<div align="center">
+<h1><a href="https://geode-sdk.org/mods/cheeseworks.quickgameplayactions"><img src="logo.png" width="25" alt="The mod's logo." /></a> Gameplay Shortcuts</h1>
 
----
+[![Mod Version](https://api.geode-sdk.org/v1/mods/cheeseworks.quickgameplayactions/status_badge?stat=version)](https://geode-sdk.org/mods/cheeseworks.quickgameplayactions)
+[![Downloads](https://api.geode-sdk.org/v1/mods/cheeseworks.quickgameplayactions/status_badge?stat=downloads)](https://geode-sdk.org/mods/cheeseworks.quickgameplayactions)
+[![Geometry Dash Version](https://api.geode-sdk.org/v1/mods/cheeseworks.quickgameplayactions/status_badge?stat=gd_version)](https://geode-sdk.org/mods/cheeseworks.quickgameplayactions)
+[![Geode Version](https://api.geode-sdk.org/v1/mods/cheeseworks.quickgameplayactions/status_badge?stat=geode_version)](https://geode-sdk.org/mods/cheeseworks.quickgameplayactions)
 
-> [![YouTube](https://img.shields.io/youtube/channel/subscribers/UCi2M6N_ff1UC6MyfWzKQvgg?style=for-the-badge&logo=youtube&logoColor=ffffff&label=YouTube)](https://www.youtube.com/@cheese_works/) [![Bluesky](https://img.shields.io/bluesky/followers/cheeseworks.gay?style=for-the-badge&logo=bluesky&logoColor=ffffff&label=Bluesky)](https://bsky.app/profile/cheeseworks.gay) [![Discord](https://img.shields.io/discord/734050209591459950?style=for-the-badge&logo=discord&logoColor=ffffff&label=Discord)](https://dsc.gg/cheeseworks)
-
-> [![Version](https://img.shields.io/github/v/release/BlueWitherer/QuickGameplayActions?include_prereleases&sort=semver&display_name=release&style=for-the-badge&logo=github&logoColor=ffffff&label=Version)](../../releases/) [![License](https://img.shields.io/github/license/BlueWitherer/QuickGameplayActions?style=for-the-badge&logo=gnu&logoColor=ffffff&label=License)](LICENSE.md)
->  
-> [![Downloads](https://img.shields.io/github/downloads/BlueWitherer/QuickGameplayActions/total?style=for-the-badge&logo=geode&logoColor=ffffff&label=Downloads)](https://geode-sdk.org/mods/cheeseworks.quickgameplayactions)
-
-> [!TIP]
-> *This mod has settings you can utilize to customize your experience.*
-
----
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://kofi.cheeseworks.gay/)
+</div>
 
 ## About
 This mod adds a **draggable menu with action buttons inside the level UI** to work with your gameplay more quickly!

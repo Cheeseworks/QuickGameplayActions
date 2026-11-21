@@ -1,10 +1,12 @@
 #include "ActionMenu.h"
 
+#include <rhatt/prelude.h>
+
 #include <Geode/modify/PlayLayer.hpp>
 
 class $modify(ShortcutsPlayLayer, PlayLayer) {
     void setupHasCompleted() {
         PlayLayer::setupHasCompleted();
-        if (auto menu = ActionMenu::create(this)) m_uiLayer->addChild(menu, 999);
-    };
+        m_uiLayer->addChild(ActionMenu::create(this), CW_HIGHEST_Z);
+    }
 };
