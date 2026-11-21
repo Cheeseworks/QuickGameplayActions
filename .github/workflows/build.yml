@@ -28,6 +28,7 @@ jobs:
                   target: ${{ matrix.config.target }}
                   upload: true
                   sdk: nightly
+                  export-debug: true
                   configure-args: "-DCW_TESTING=OFF"
 
     merge:
