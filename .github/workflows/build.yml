@@ -29,6 +29,7 @@ jobs:
                   upload: true
                   sdk: nightly
                   export-debug: true
+                  build-config: ${{ matrix.config.target == 'win' && 'RelWithDebInfo' || 'Release' }}
                   configure-args: "-DCW_TESTING=OFF"
 
     merge:
