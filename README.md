@@ -20,7 +20,7 @@ A menu will appear in-game, it'll have your essentials such as practice mode and
 Drag the top-left button to position the menu wherever on the screen you would like it to be. You may also press said button without moving it to toggle the menu when you need it out of the way.
 
 > [!TIP]
-> *You can choose which buttons you actually want to use on this menu via the mod's settings.*
+> *You can choose which buttons you actually want on this menu via the mod's settings.*
 
 ---
 
