@@ -133,9 +133,12 @@ bool ActionMenu::init(PlayLayer* pl) {
             "exit-btn",
             [pl](auto) {
                 if (pl) pl->onQuit();
+#ifndef GEODE_IS_IOS
                 cw::sfx::play("quitSound_01.ogg");
+#endif
             },
         },
+#ifndef GEODE_IS_IOS
         ActionItem{
             m_impl->useRestart && pl->m_isPlatformer,
             "GJ_replayFullBtn_001.png",
@@ -144,6 +147,7 @@ bool ActionMenu::init(PlayLayer* pl) {
                 if (pl) pl->resetLevelFromStart();
             },
         },
+#endif
     };
 
     for (auto& b : btns) {
